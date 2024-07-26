@@ -61,7 +61,7 @@ for p = 7:7 %1:numberOfDataPow %7:7
             if f > 31
                 ticks = 0;
                 
-                AllowedVarience = getAllowedVarience(newPulseCollection, f, i);
+                AllowedVarience = getAllowedVarienceBackward(newPulseCollection, f, i);
                 flatError = 0;
                 if f == 930
                     flatError = 5000;
@@ -72,7 +72,7 @@ for p = 7:7 %1:numberOfDataPow %7:7
                     ticks=ticks+1;
                     if ticks > 10
                         ticks = 0;
-                        flatError = flatError + 0.1;
+                        flatError = flatError + 1; % was 0.1
                     end
                 end
                 newPulseCollection(f, i) = newPoint;
@@ -125,7 +125,7 @@ for p = 7:7 %1:numberOfDataPow %7:7
                     ticks=ticks+1;
                     if ticks > 10
                         ticks = 0;
-                        flatError = flatError + 0.1;%was 0.1
+                        flatError = flatError + 1;%was 0.1
                     end
                 end
                 newPulseCollection(f, i) = newPoint;
@@ -136,7 +136,7 @@ for p = 7:7 %1:numberOfDataPow %7:7
         end
         disp(f);
     end
-    newPulseCollection = newPulseCollection + averagePulse;
+    newPulseCollection = newPulseCollection + averagePulse + wgn(1340, 100, 5);
 
     figure;
     imagesc(newPulseCollection);
@@ -323,7 +323,22 @@ function error = getAllowedVarience(newPulseCollection, f, i)
 %     hold off
     error = abs(y1(1)-y1(length(y1)))/length(y1);%+0.028*y(1);  
 end
-
+function error = getAllowedVarienceBackward(newPulseCollection, f, i)
+    x = 1:30;
+    y = newPulseCollection(f+1:f+30, i);
+    y = reshape(y,1,30);
+    fit = polyfit(x,y , 1);
+    y1 = polyval(fit, x);
+%     figure
+%     plot(x,y,'o')
+%     title("Best Fit")
+%     xlabel("Wavelength");
+%     ylabel("Amplitude");
+%     hold on
+%     plot(x,y1)
+%     hold off
+    error = abs(y1(1)-y1(length(y1)))/length(y1);%+0.028*y(1);  
+end
 function loss = getLoss(genFitX, genFitY, realFitX, realFitY)
     line(genFitX,genFitY,'LineWidth',2,'Color',[1.00,0.41,0.16]);
     line(realFitX,realFitY,'LineWidth',2,'Color',[1.00,0.41,0.16]);
