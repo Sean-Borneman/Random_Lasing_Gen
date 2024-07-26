@@ -29,13 +29,14 @@ for p = 7:7 %1:numberOfDataPow %7:7
      imagesc(diffCollection);
      title("Diff Data from pulse"+ strPOWER+"[ujcm2]");
     
-    for f = 1:length(Data.Wavel)
+    %known bug where when counting backwards the slope based error is 0
+    for f =930:-1:1% 1:length(Data.Wavel) 
         %fit theh first frequency to a normal distribution, must flip bc need a collumn not row vector
         frequencyHist = diffCollection(f, :) ;
         %Fit to stable distribution, Levi distribution is a special case
         %where alpha = 0.5, beta = 1
         pd = fitdist(frequencyHist(:),'Stable');%fitdist(frequencyHist(:),'Gamma');
-        if (f == 925)
+        if (f == 930)
             data = diffCollection(f, :);
             % Generate x values for plotting the PDF
             x_values = linspace(min(data), max(data), 1000);
@@ -62,7 +63,11 @@ for p = 7:7 %1:numberOfDataPow %7:7
                 
                 AllowedVarience = getAllowedVarience(newPulseCollection, f, i);
                 flatError = 0;
-                while abs(newPulseCollection(f-1, i) - newPoint) > AllowedVarience+flatError%10%+10*newPoint^0.35
+                if f == 930
+                    flatError = 5000;
+                end
+                
+                while abs(newPulseCollection(f+1, i) - newPoint) > AllowedVarience+flatError%10%+10*newPoint^0.35
                     newPoint = random(pd);
                     ticks=ticks+1;
                     if ticks > 10
@@ -76,6 +81,7 @@ for p = 7:7 %1:numberOfDataPow %7:7
                 
             end 
         end
+        disp(f);
     end
     newPulseCollection = newPulseCollection + averagePulse;
 
