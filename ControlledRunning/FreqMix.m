@@ -65,10 +65,10 @@ for p = 7:7%1:numberOfDataPow %1:1
     figure 
     imagesc(new_pulse);
     
-%     [genFitX,genFitY] = getFits(new_pulse);
-%     [realFitX,realFitY] = getFits(Data.singleSpec(p).data);
-%     disp("Loss:");
-%     disp(getLoss(genFitX, genFitY, realFitX, realFitY));
+    [genFitX,genFitY] = getFits(new_pulse);
+    [realFitX,realFitY] = getFits(Data.singleSpec(p).data);
+    disp("Loss:");
+    disp(getLoss(genFitX, genFitY, realFitX, realFitY));
 end
 
 function filteredList = filtList(IList, lower_bound, upper_bound)
