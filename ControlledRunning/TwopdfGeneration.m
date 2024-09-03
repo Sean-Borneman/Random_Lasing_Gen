@@ -15,7 +15,7 @@ newPulseCollection = zeros(1340, 100);
 dataPath = 'C:/Users/Sean/Documents/Programing/Python/PURDUE/ControlledRunning/GeneratedDataGradual';
 %% Iterate over each power
 
-for p = 1:numberOfDataPow %7:7 
+for p = 7:7%1:numberOfDataPow %7:7 
     %% Graph each shot Collection
     numPOWER = round(Data.power(p)*1000);
     disp("POWER______:"+numPOWER);
@@ -30,23 +30,23 @@ for p = 1:numberOfDataPow %7:7
      imagesc(diffCollection);
      title("Diff Data from pulse"+ strPOWER+"[ujcm2]");
     
-    %known bug where when counting backwards the slope based error is 0
+%     known bug where when counting backwards the slope based error is 0
     for f =930:-1:1% 1:length(Data.Wavel) 
-        %fit theh first frequency to a normal distribution, must flip bc need a collumn not row vector
+%         fit theh first frequency to a normal distribution, must flip bc need a collumn not row vector
         frequencyHist = diffCollection(f, :) ;
-        %Fit to stable distribution, Levi distribution is a special case
-        %where alpha = 0.5, beta = 1
+%         Fit to stable distribution, Levi distribution is a special case
+%         where alpha = 0.5, beta = 1
         pd = fitdist(frequencyHist(:),'Stable');%fitdist(frequencyHist(:),'Gamma');
         if (f == 930)
-            pd.gam = pd.gam +10;
+            %pd.gam = pd.gam +10;
             data = diffCollection(f, :);
-            % Generate x values for plotting the PDF
+%             Generate x values for plotting the PDF
             x_values = linspace(min(data), max(data), 1000);
 
-            % Calculate PDF values of the fitted normal distribution
+%             Calculate PDF values of the fitted normal distribution
             pdf_values = pdf(pd, x_values);
 
-            % Plot the PDF
+%             Plot the PDF
             figure;
             hold on
             histogram(data, 25,'Normalization', 'pdf');
@@ -57,8 +57,8 @@ for p = 1:numberOfDataPow %7:7
             legend('Fitted Normal PDF');
             hold off
         end
-        %% Generate 100 amplitudes for this wavelength
-        %samples a random number from the PDF
+        % Generate 100 amplitudes for this wavelength
+%         samples a random number from the PDF
         for i = 1:100
             newPoint = random(pd);
             if f > 31
@@ -69,16 +69,16 @@ for p = 1:numberOfDataPow %7:7
                 if f == 930
                     flatError = 5000;
                 end
-%                 if f <= 825
-%                     flatError = 5000;
-%                 end
+                if f <= 825
+                    flatError = 500;
+                end
                 
                 while abs(newPulseCollection(f+1, i) - newPoint) > AllowedVarience+flatError%10%+10*newPoint^0.35
                     newPoint = random(pd);
                     ticks=ticks+1;
                     if ticks > 10
                         ticks = 0;
-                        flatError = flatError + 0.1; % was 0.1
+                        flatError = flatError + 0.1; % was 0.1 %0.3 gest me close
                     end
                 end
                 newPulseCollection(f, i) = newPoint;
@@ -87,23 +87,23 @@ for p = 1:numberOfDataPow %7:7
                 
             end 
         end
-%         disp(f);
+        disp(f);
     end
     for f =931:length(Data.Wavel) 
-        %fit theh first frequency to a normal distribution, must flip bc need a collumn not row vector
+%         fit theh first frequency to a normal distribution, must flip bc need a collumn not row vector
         frequencyHist = diffCollection(f, :) ;
-        %Fit to stable distribution, Levi distribution is a special case
-        %where alpha = 0.5, beta = 1
+%         Fit tro stable distribution, Levi distribution is a special case
+%         where alpha = 0.5, beta = 1
         pd = fitdist(frequencyHist(:),'Stable');%fitdist(frequencyHist(:),'Gamma');
         if (f == 930)
             data = diffCollection(f, :);
-            % Generate x values for plotting the PDF
+%             Generate x values for plotting the PDF
             x_values = linspace(min(data), max(data), 1000);
 
-            % Calculate PDF values of the fitted normal distribution
+%             Calculate PDF values of the fitted normal distribution
             pdf_values = pdf(pd, x_values);
 
-            % Plot the PDF
+%             Plot the PDF
             figure;
             hold on
             histogram(data, 25,'Normalization', 'pdf');
@@ -113,8 +113,8 @@ for p = 1:numberOfDataPow %7:7
             title('Normal Distribution PDF');
             legend('Fitted Normal PDF');
         end
-        %% Generate 100 amplitudes for this wavelength
-        %samples a random number from the PDF
+        % Generate 100 amplitudes for this wavelength
+%         samples a rando m number from the PDF
         for i = 1:100
             newPoint = random(pd);
             if f > 31
@@ -140,10 +140,10 @@ for p = 1:numberOfDataPow %7:7
                 
             end 
         end
-%         disp(f);
+        disp(f);
     end
-    newPulseCollection = newPulseCollection + averagePulse ;%+ wgn(1340, 100, 23);%was 30
-%     newPulseCollection = averagePulse + wgn(1340, 100, 
+    newPulseCollection = newPulseCollection + averagePulse + wgn(1340, 100, 23);%was 30
+%     newPulseCollection = averagePulse + wgn(1340, 100, 23);
     clims = [min(pulseCollection, [], 'all') max(pulseCollection, [], 'all')];
     %set Color bounds
     figure;
@@ -152,10 +152,10 @@ for p = 1:numberOfDataPow %7:7
     title("Gen Data from pulse"+ strPOWER+"[ujcm2]");
     hold off
     %%Lasing Loss
-    [genFitX,genFitY] = getLasingFits(newPulseCollection);
-    [realFitX,realFitY] = getLasingFits(Data.singleSpec(p).data);
-    lasing_loss = getLoss(genFitX, genFitY, realFitX, realFitY, "Lasing");
-    errors = [errors, lasing_loss];
+%     [genFitX,genFitY] = getLasingFits(newPulseCollection);
+%     [realFitX,realFitY] = getLasingFits(Data.singleSpec(p).data);
+%     lasing_loss = getLoss(genFitX, genFitY, realFitX, realFitY, "Lasing");
+%     errors = [errors, lasing_loss];
     
     %%Spont Loss
     [genFitX,genFitY] = getSpontFits(newPulseCollection);
@@ -163,12 +163,12 @@ for p = 1:numberOfDataPow %7:7
     spont_loss = getLoss(genFitX, genFitY, realFitX, realFitY, "Spont");
     disp(spont_loss);
     disp("POWER______:"+numPOWER);
-    disp("Lasing Loss:");
-    disp(lasing_loss);
+%     disp("Lasing Loss:");
+%     disp(lasing_loss);
     disp("Spont Loss:");
     disp(spont_loss);
-    disp("Total Error:");
-    disp(lasing_loss + spont_loss);
+%     disp("Total Error:");
+%     disp(lasing_loss + spont_loss);
 end
 
 function [xFited, yFited] = getLasingFits(pulses)
@@ -360,23 +360,29 @@ function error = getAllowedVarienceBackward(newPulseCollection, f, i)
     error = abs(y1(1)-y1(length(y1)))/length(y1);%+0.028*y(1);  
 end
 function loss = getLoss(genFitX, genFitY, realFitX, realFitY, titleN)
+    figure
+    hold on 
     line(genFitX,genFitY,'LineWidth',2,'Color',[1.00,0.41,0.16]);
-    line(realFitX,realFitY,'LineWidth',2,'Color',[1.00,0.41,0.16]);
+    line(realFitX,realFitY,'LineWidth',2,'Color','blue', 'LineStyle','--');
     title("Compared Orderr Parameters for" + titleN + "reigem");
-
+    legend('on');
+    hold off
+    
     d1 = realFitY;
     d1_len = numel(realFitY);
     d2 = genFitY;
     d2_len = numel(genFitY);
-    try
-        d1 = interp1(1:(d2_len / d1_len):d2_len,d1,1:d2_len,'linear','extrap');
-    catch
-        try
-        d1 = interp1(1:(d2_len / d1_len):d2_len+(d2_len / d1_len),d1,1:d2_len,'linear','extrap');
-        catch
-            d1 = interp1(1:(d2_len / d1_len):d2_len+2*(d2_len / d1_len),d1,1:d2_len,'linear','extrap');
-        end
-    end
+    
+    d1 = interp1(1:d1_len, d1, d2_len,'linear', 'extrap'); %doesnt work becuase d2 can query points outside of d1's function boundry
+%     try
+%         d1 = interp1(1:(d2_len / d1_len):d2_len,d1,1:d2_len,'linear','extrap');
+%     catch
+%         try
+%         d1 = interp1(1:(d2_len / d1_len):d2_len+(d2_len / d1_len),d1,1:d2_len,'linear','extrap');
+%         catch
+%             d1 = interp1(1:(d2_len / d1_len):d2_len+2*(d2_len / d1_len),d1,1:d2_len,'linear','extrap');
+%         end
+%     end
     %d1 = interp1(1:(d2_len / d1_len):d2_len,d1,1:d2_len,'linear','extrap');
     %line(mixxFit2,d1)
     RMSE = sqrt(mean(((genFitY - d1) .^ 2)));
@@ -538,3 +544,4 @@ function [xFited, yFited] = getSpontFits(pulses)
 %     realyfit2 = yFit2;
     end
 end
+

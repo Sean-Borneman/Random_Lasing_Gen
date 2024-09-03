@@ -1,0 +1,142 @@
+POWER______:238
+Lasing Loss:
+   6.5133e-09
+
+Spont Loss:
+   1.2427e-06
+
+Total Error:
+   1.2493e-06
+
+POWER______:201
+Lasing Loss:
+   1.3491e-08
+
+Spont Loss:
+   1.8724e-06
+
+Total Error:
+   1.8859e-06
+
+POWER______:170
+Lasing Loss:
+   2.4483e-08
+
+Spont Loss:
+   1.0536e-06
+
+Total Error:
+   1.0780e-06
+
+POWER______:144
+Lasing Loss:
+   6.3526e-08
+
+Spont Loss:
+   1.3533e-06
+
+Total Error:
+   1.4168e-06
+
+POWER______:135
+Lasing Loss:
+   2.0288e-07
+
+Spont Loss:
+   1.0490e-06
+
+Total Error:
+   1.2519e-06
+
+POWER______:122
+Lasing Loss:
+   3.9893e-07
+
+Spont Loss:
+   1.2811e-06
+
+Total Error:
+   1.6801e-06
+
+POWER______:114
+Lasing Loss:
+   9.0151e-07
+
+Spont Loss:
+   7.0458e-06
+
+Total Error:
+   7.9473e-06
+POWER______:110
+Lasing Loss:
+   1.9794e-06
+
+Spont Loss:
+   1.4511e-06
+
+Total Error:
+   3.4304e-06
+
+POWER______:107
+Lasing Loss:
+   2.4782e-06
+
+Spont Loss:
+   1.1611e-06
+
+Total Error:
+   3.6393e-06
+
+POWER______:103
+Lasing Loss:
+   5.1595e-06
+
+Spont Loss:
+   2.2514e-06
+
+Total Error:
+   7.4109e-06
+
+POWER______:87
+Lasing Loss:
+   7.2200e-06
+
+Spont Loss:
+   1.6079e-06
+
+Total Error:
+   8.8280e-06
+
+
+POWER______:74
+Lasing Loss:
+   1.5457e-05
+
+Spont Loss:
+   4.2505e-06
+
+Total Error:
+   1.9708e-05
+
+POWER______:62
+Lasing Loss:
+   1.6397e-05
+
+Spont Loss:
+   2.4972e-06
+
+Total Error:
+   1.8894e-05
+
+
+POWER______:53
+Lasing Loss:
+   2.4176e-05
+
+Spont Loss:
+   2.8448e-06
+
+Total Error:
+   2.7021e-05
+
+>> 
